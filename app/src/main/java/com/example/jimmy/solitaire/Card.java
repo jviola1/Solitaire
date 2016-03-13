@@ -6,7 +6,7 @@ public class Card {
     Pile pile;
     ImageView img;
     private int rank;  //Value between 1 and 13 where 1 is ace, 11 is Jack, 12 is Queen and 13 is King
-    private int suit;  //0 = Spades, 1 = Clubs, 2 = Hearts, 4 = Diamonds
+    private int suit;  //0 = Spades, 1 = Clubs, 2 = Hearts, 3 = Diamonds
     private int cardColor; //0 = black, 1 = Red
     private boolean reserve; //True if the card is face-down
 
