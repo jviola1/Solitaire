@@ -1,102 +1,110 @@
 package com.example.jimmy.solitaire;
 
+import android.graphics.Paint;
+import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
+import java.util.Collection;
+
 public class Card {
+
+    public enum Suit{Spade, Club, Heart, Diamond}
+
     Pile pile;
     ImageView img;
-    private int rank;  //Value between 1 and 13 where 1 is ace, 11 is Jack, 12 is Queen and 13 is King
-    private int suit;  //0 = Spades, 1 = Clubs, 2 = Hearts, 4 = Diamonds
-    private int cardColor; //0 = black, 1 = Red
-    private boolean reserve; //True if the card is face-down
+    private int rank;
+    private Suit suit;
+    private int color;
+    private boolean isOpen = false;
+    @DrawableRes int imgId;
 
-    //For arbitrary card object
-    public Card(Pile pile, ImageView img){
+    public Card(Pile pile, ImageView img, int rank, Suit suit, @DrawableRes int imgId){
         this.img = img;
         pile.addCard(this);
+        this.rank = rank;
+        this.suit = suit;
+        this.imgId = imgId;
+
+        switch (suit){
+            case Spade:
+            case Club:
+                color = 0;
+                break;
+            case Heart:
+            case Diamond:
+                color = 1;
+                break;
+
+        }
+
+        if(isOpen) {
+            img.setImageResource(imgId);
+        }
+        else {
+            img.setImageResource(R.drawable.back);
+        }
     }
 
-    //For full-fledged card object
-    public Card(Pile pile, ImageView img, int tempRank, int tempSuit, boolean tempReserve){
-        this.img = img;
-        pile.addCard(this);
-        rank = tempRank;
-        suit = tempSuit;
-        reserve = tempReserve;
-        if(suit <= 1)
-            cardColor = 0;
-        else
-            cardColor = 1;
+    public int getRank(){
+        return rank;
     }
 
-    //For cloning another card object
-    public Card(Card tempCard){
-        this.img = tempCard.getImg();
-        pile.addCard(this);
-        rank = tempCard.getRank();
-        suit = tempCard.getSuit();
-        cardColor = tempCard.getColor();
-        reserve = tempCard.getReserve();
+    public Suit getSuit(){
+        return suit;
     }
 
-    //Returns true if the card passed in is of the opposite color
-    public boolean isAlternating(Card compareCard){
-        return compareCard.cardColor != cardColor;
+    public boolean isOpen(){
+        return isOpen;
     }
 
-    //Returns true if the card passed in is of the same suit
-    public boolean isSameSuit(Card compareCard){
-        return compareCard.getSuit() == suit;
+    public void openCard(){
+        isOpen = true;
+        img.setImageResource(imgId);
     }
 
-    //Returns true if this card is one rank lower than the card passed in
-    public boolean isOneLower(Card compareCard){
-        return rank == (compareCard.getRank() - 1);
+    public void closeCard(){
+        isOpen = false;
+        img.setImageResource(R.drawable.back);
     }
 
-    //Returns true if this card is one rank higher than the card passed in
-    public boolean isOneHigher(Card compareCard){
-        return rank == (compareCard.getRank() - 1);
-    }
-
-    //Mutators
     public void setLocation(float x, float y){
         this.img.setX(x);
         this.img.setY(y);
     }
 
-    public void setRank(int tempRank){
-        rank = tempRank;
+    public boolean isAlternatingCard(Card compareCard){
+        if(this.color+compareCard.color == 1){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-    public void setSuit(int tempSuit){
-        suit = tempSuit;
+    public boolean isSameSuit(Card compareCard){
+        if(this.suit == compareCard.suit){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-    public void setReserve(boolean tempReserve)
-    {
-        reserve = tempReserve;
+    public boolean isOneLower(Card compareCard){
+        if(compareCard.rank - this.rank == 1){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-    //Accessors
-    public int getRank(){
-        return rank;
-    }
-
-    public int getSuit(){
-        return suit;
-    }
-
-    public ImageView getImg(){
-        return img;
-    }
-
-    public int getColor(){
-        return cardColor;
-    }
-
-    public boolean getReserve(){
-        return reserve;
+    public boolean isOneHigher(Card compareCard){
+        if(this.rank - compareCard.rank == 1){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
-
