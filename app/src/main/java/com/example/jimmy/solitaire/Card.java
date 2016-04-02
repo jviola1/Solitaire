@@ -1,7 +1,10 @@
 package com.example.jimmy.solitaire;
 
+import android.content.Context;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.Collection;
@@ -17,6 +20,7 @@ public class Card {
     private int color;
     private boolean isOpen = false;
     @DrawableRes int imgId;
+    @DrawableRes int backImgId = R.drawable.back;
 
     public Card(Pile pile, ImageView img, int rank, Suit suit, @DrawableRes int imgId){
         this.img = img;
@@ -41,8 +45,9 @@ public class Card {
             img.setImageResource(imgId);
         }
         else {
-            img.setImageResource(R.drawable.back);
+            img.setImageResource(backImgId);
         }
+
     }
 
     public int getRank(){
@@ -64,7 +69,7 @@ public class Card {
 
     public void closeCard(){
         isOpen = false;
-        img.setImageResource(R.drawable.back);
+        img.setImageResource(backImgId);
     }
 
     public void setLocation(float x, float y){
@@ -80,6 +85,7 @@ public class Card {
             return false;
         }
     }
+
 
     public boolean isSameSuit(Card compareCard){
         if(this.suit == compareCard.suit){
@@ -108,3 +114,4 @@ public class Card {
         }
     }
 }
+

@@ -7,8 +7,8 @@ import java.util.AbstractCollection;
 import java.util.ArrayList;
 
 
-public class FoundationPile {
-    ArrayList<Card> list = new ArrayList<Card>();
+public class FoundationPile extends Pile{
+    Card card;
     Rect area;
     int width = 93;
     int height = 143;
@@ -19,12 +19,24 @@ public class FoundationPile {
         this.suit = suit;
     }
 
-    public void addCard(ArrayList<Card> tempList){
-        if(tempList.size()==1) {
-            Card card = tempList.get(0);
-            if (card.getRank() == 1 && card.getSuit() == suit) {
-                list.add(card);
-            }
+    public void addCardToTemplist(ArrayList<Card> tempList){
+        tempList.add(card);
+        this.card = null;
+    }
+
+    public void returnCards(ArrayList<Card> tempList){
+        this.card = tempList.get(0);
+        this.card.setLocation(area.left, area.top);
+    }
+
+    public boolean addCardFromTempList(ArrayList<Card> tempList){
+        if(tempList.size()==1&&tempList.get(0).getRank()==1&&tempList.get(0).getSuit()==suit){
+            this.card = tempList.get(0);
+            this.card.setLocation(area.left, area.top);
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
