@@ -202,5 +202,23 @@ public class BasicPile extends Pile{
         }
     }
 
+    public String getCardListInfo(){
+        String info = "";
+        if(cardList.size()==0){
+            info += "empty";
+        }
+        else {
+            for (int i = 0; i < cardList.size(); i++) {
+                if (cardList.get(i).isOpen()) {
+                    info += cardList.get(i).getCardName() + ",open" + "&";
+                } else {
+                    info += cardList.get(i).getCardName() + ",close" + "&";
+                }
+            }
+        }
+
+        return info;
+    }
+
 }
 

@@ -1,6 +1,8 @@
 package com.example.jimmy.solitaire;
 
+import android.content.Context;
 import android.graphics.Rect;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,6 +15,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import java.io.File;
+import java.io.InputStreamReader;
+
 public class MainActivity extends AppCompatActivity {
 
     GameScene gameScene;
@@ -22,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
@@ -29,15 +35,18 @@ public class MainActivity extends AppCompatActivity {
         relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         if(height>width) {
-            gameScene = new GameScene(this, relativeLayout, -162, width/8, width/8/93*143);
+            gameScene = new GameScene(this, relativeLayout, -162, width/8, height/8);
         }
         else {
-            gameScene = new GameScene(this, relativeLayout, -162, height/8, height/8/93*143);
+            gameScene = new GameScene(this, relativeLayout, -162, height/8, width/8);
         }
+
+        
 
         relativeLayout.addView(gameScene);
 
         setContentView(relativeLayout);
+
 
     }
 

@@ -1,17 +1,30 @@
 package com.example.jimmy.solitaire;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.Collection;
 
+/**
+ * Created by jay on 16/3/8.
+ */
 public class Card {
 
-    public enum Suit{Spade, Club, Heart, Diamond}
+    public enum Suit{Spade, Club, Heart, Diamond;
+
+        @Override
+        public String toString() {
+            return super.toString();
+        }
+    }
 
     Pile pile;
     ImageView img;
@@ -22,12 +35,18 @@ public class Card {
     @DrawableRes int imgId;
     @DrawableRes int backImgId = R.drawable.back;
 
-    public Card(Pile pile, ImageView img, int rank, Suit suit, @DrawableRes int imgId){
+    Context context;
+
+    public Card(Pile pile, ImageView img, int rank, Suit suit){
         this.img = img;
         pile.addCard(this);
         this.rank = rank;
         this.suit = suit;
-        this.imgId = imgId;
+        try {
+            this.imgId = (Integer)R.drawable.class.getField(suit.toString().toLowerCase()+String.valueOf(rank)).get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         switch (suit){
             case Spade:
@@ -48,6 +67,10 @@ public class Card {
             img.setImageResource(backImgId);
         }
 
+    }
+
+    public String getCardName(){
+        return suit.toString().toLowerCase()+","+rank;
     }
 
     public int getRank(){
