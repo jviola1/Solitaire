@@ -2,6 +2,7 @@ package com.example.jimmy.solitaire;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.MotionEventCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Xml;
 import android.view.MotionEvent;
@@ -40,13 +42,15 @@ public class GameScene extends View{
     int width;
     int height;
     int marginLeft = 100;
-    int marginTop = 250;
+    int marginTop = scalePixels(250, true);
     int marginX = 50;
     int marginY = 300;
 
+    static DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+
     int touchCorrection;
 
-    Rect screen = new Rect(10, 10, 1200, 1200);
+    Rect screen = new Rect(10, 10, scalePixels(1300, false), scalePixels(1300, false));
 
     BasicPile[] basicPileList = new BasicPile[7];
 
@@ -74,6 +78,8 @@ public class GameScene extends View{
         this.height = height;
 
 
+        Log.i("TAG", "MarginTop " + marginTop);
+        Log.i("TAG", "MarginLeft " + marginLeft);
 
 
         //initialize basicPiles and add them to basicPileList
@@ -81,7 +87,7 @@ public class GameScene extends View{
             ImageView pileImg = new ImageView(context);
             pileImg.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
             if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                pileImg.setX(marginLeft+i*(marginX+width));
+                pileImg.setX(marginLeft+i*scalePixels((marginX + width), false));
                 pileImg.setY(marginTop);
             }
             else {
@@ -122,10 +128,10 @@ public class GameScene extends View{
         stockAndWaste.height = height;
 
         //initialize foundationPiles
-        setFoundationPile(relativeLayout, (int)wasteImg.getX()+marginX+width, (int)wasteImg.getY(), 0, Card.Suit.Club);
-        setFoundationPile(relativeLayout, (int) wasteImg.getX() + (marginX + width) * 2, (int) wasteImg.getY(), 1, Card.Suit.Spade);
-        setFoundationPile(relativeLayout, (int) wasteImg.getX() + (marginX + width) * 3, (int) wasteImg.getY(), 2, Card.Suit.Diamond);
-        setFoundationPile(relativeLayout, (int) wasteImg.getX() + (marginX + width) * 4, (int) wasteImg.getY(), 3, Card.Suit.Heart);
+        setFoundationPile(relativeLayout, (int) (metrics.widthPixels - (/*wasteImg.getX() +*/ marginX+width)), (int)wasteImg.getY(), 0, Card.Suit.Club);
+        setFoundationPile(relativeLayout, (int) (metrics.widthPixels - ((marginX + width) * 2)),  (int) wasteImg.getY(), 1, Card.Suit.Spade);
+        setFoundationPile(relativeLayout, (int) (metrics.widthPixels - ((marginX + width) * 3)), (int) wasteImg.getY(), 2, Card.Suit.Diamond);
+        setFoundationPile(relativeLayout, (int) (metrics.widthPixels - ((marginX + width) * 4)), (int) wasteImg.getY(), 3, Card.Suit.Heart);
 
 
         final Button random = new Button(context);
@@ -866,6 +872,14 @@ public class GameScene extends View{
                 }
             }
         }
+    }
+
+    public static int scalePixels(int px, boolean isVertical)
+    {
+        if(isVertical)
+            return (int) (px * ((metrics.heightPixels) / 768.0));
+        return (int) (px * ((metrics.widthPixels) / 1280.0));
+
     }
 
 }

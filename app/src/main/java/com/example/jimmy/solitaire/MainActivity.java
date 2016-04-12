@@ -1,6 +1,7 @@
 package com.example.jimmy.solitaire;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
