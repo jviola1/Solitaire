@@ -76,10 +76,7 @@ public class GameScene extends View{
         this.touchCorrection = touchCorrection;
         this.width = width;
         this.height = height;
-
-
-        Log.i("TAG", "MarginTop " + marginTop);
-        Log.i("TAG", "MarginLeft " + marginLeft);
+        
 
 
         //initialize basicPiles and add them to basicPileList
