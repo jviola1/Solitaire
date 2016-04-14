@@ -41,9 +41,9 @@ public class GameScene extends View{
     //width, height are attributes of ImageView of cards, marginLeft, marginTop, marginX, marginY are margins of ImageView of basciPiles
     int width;
     int height;
-    int marginLeft = 100;
+    int marginLeft = scalePixels(100, false);
     int marginTop = scalePixels(250, true);
-    int marginX = 50;
+    int marginX = scalePixels(50, false);
     int marginY = 300;
 
     static DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -76,7 +76,7 @@ public class GameScene extends View{
         this.touchCorrection = touchCorrection;
         this.width = width;
         this.height = height;
-        
+
 
 
         //initialize basicPiles and add them to basicPileList
@@ -84,7 +84,7 @@ public class GameScene extends View{
             ImageView pileImg = new ImageView(context);
             pileImg.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
             if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                pileImg.setX(marginLeft+i*scalePixels((marginX + width), false));
+                pileImg.setX(marginLeft+i*(marginX + width));
                 pileImg.setY(marginTop);
             }
             else {
