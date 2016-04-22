@@ -1,9 +1,9 @@
 package com.example.jimmy.solitaire;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,61 +11,97 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
+import android.widget.Toast;
 
-import java.io.File;
-import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
-    GameScene gameScene;
+        Button play, manual, score, exit;
+        public static final int PLAY_REQUEST_CODE = 0;
+        public static final int MANUAL_REQUEST_CODE = 1;
+        public static final int SCORE_REQUEST_CODE = 2;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            play = (Button)findViewById(R.id.button);
+            play.setOnClickListener(this);
 
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            manual = (Button)findViewById(R.id.button1);
+            manual.setOnClickListener(this);
 
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
+            score = (Button)findViewById(R.id.button3);
+            score.setOnClickListener(this);
 
-        RelativeLayout relativeLayout = new RelativeLayout(this);
-        relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            exit = (Button)findViewById(R.id.button4);
+            exit.setOnClickListener(this);
 
-        if(height>width) {
-            gameScene = new GameScene(this, relativeLayout, -162, width/8, height/8);
         }
-        else {
-            gameScene = new GameScene(this, relativeLayout, -162, height/8, width/8);
-        }
+    //    public OnClickListener listen = new OnClickListener() {
+            public void onClick(View v) {
 
-        
+                /* FIRST WAY
+                    Intent i = new Intent(MainActivity.this, PlayActivity.class);
+                        startActivity(i);
 
-        relativeLayout.addView(gameScene);
+                        Toast.makeText(getApplicationContext(), "Let The Games Begin!", Toast.LENGTH_SHORT).show();
+                }
 
-        setContentView(relativeLayout);
+            public void onClickManual(View manual){
+
+                    Intent m = new Intent(MainActivity.this, SecondActivity.class);
+                        startActivity(m);
+
+                        Toast.makeText(getApplicationContext(), "Study The Rules", Toast.LENGTH_SHORT).show();
+                }
+            public void onClickScore(View score){
+
+                    Intent myintent = new Intent(MainActivity.this, ScoreActivity.class);
+                        startActivity(myintent);
+
+                        Toast.makeText(getApplicationContext(), "What's Your Score", Toast.LENGTH_SHORT).show();
+                }
+                */
+
+                /*SECOND WAY */
+                switch (v.getId()) {
+                    case R.id.button:
+                        Intent i = new Intent(this, Main2Activity.class);
+                        startActivity(i);
+
+                        Toast.makeText(getApplicationContext(), "Let The Games Begin!", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.button1:
+                        Intent m = new Intent(this, SecondActivity.class);
+                        startActivityForResult(m, MANUAL_REQUEST_CODE);
+
+                        Toast.makeText(getApplicationContext(), "Study The Rules", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.button3:
+                        Intent myintent = new Intent(MainActivity.this, ScoreActivity.class);
+                        startActivityForResult(myintent, SCORE_REQUEST_CODE);
+
+                        Toast.makeText(getApplicationContext(), "What's Your Score", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.button4:
+                        Toast.makeText(getApplicationContext(), "Nothing Yet!", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    default:
+                        break;
+
+
+    //    };
+
+
+                }}
 
 
     }
-
-    public void onWindowFocusChanged(boolean hasFocus){
-        super.onWindowFocusChanged(hasFocus);
-
-        Rect rect = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        int statusBarHeight = rect.top;
-
-        View v = getWindow().findViewById(Window.ID_ANDROID_CONTENT);
-        int contentTop = v.getTop();
-
-        Log.d("touchCorrection:",String.valueOf(-(contentTop+statusBarHeight)));
-
-        gameScene.touchCorrection = -(contentTop+statusBarHeight);
-    }
-
-}
