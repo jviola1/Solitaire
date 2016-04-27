@@ -102,10 +102,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 onBackPressed();
                 break;
 
-//            case R.id.button5:
-//                Intent w = new Intent(this, WatchActivity.class);
-//                startActivity(w);
-//                break;
+            case R.id.button5:
+                Intent w = new Intent(this, WatchActivity.class);
+                startActivity(w);
+                break;
 
             default:
                 break;
