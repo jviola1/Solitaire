@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         exit = (Button) findViewById(R.id.button4);
         exit.setOnClickListener(this);
 
-        watch = (Button) findViewById(R.id.button4);
+        watch = (Button) findViewById(R.id.button5);
         watch.setOnClickListener(this);
 
     }
@@ -103,7 +103,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.button5:
-                Intent w = new Intent(this, WatchActivity.class);
+                Intent w = new Intent(this, TimerActivity.class);
                 startActivity(w);
                 break;
 
