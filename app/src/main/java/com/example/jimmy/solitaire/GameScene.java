@@ -111,14 +111,14 @@ public class GameScene extends View{
         ImageView stockImg = new ImageView(context);
         stockImg.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         stockImg.setBackgroundColor(Color.GRAY);
-        stockImg.setX(100);
+        stockImg.setX(200);
         stockImg.setY(70);
         relativeLayout.addView(stockImg);
 
         ImageView wasteImg = new ImageView(context);
         wasteImg.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         wasteImg.setBackgroundColor(Color.GRAY);
-        wasteImg.setX(100 + marginX + width);
+        wasteImg.setX(200 + marginX + width);
         wasteImg.setY(70);
         relativeLayout.addView(wasteImg);
 
@@ -134,12 +134,12 @@ public class GameScene extends View{
 
 
         final Button random = new Button(context);
-        random.setLayoutParams(new RelativeLayout.LayoutParams(80, 80));
+        random.setLayoutParams(new RelativeLayout.LayoutParams(140, 140));
         random.setX(10);
-        random.setY(100);
+        random.setY(810);
         random.setBackgroundColor(Color.RED);
         random.setText("random");
-        random.setTextSize(7);
+        random.setTextSize(9);
         random.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,12 +149,12 @@ public class GameScene extends View{
         relativeLayout.addView(random);
 
         Button save = new Button(context);
-        save.setLayoutParams(new RelativeLayout.LayoutParams(80, 80));
+        save.setLayoutParams(new RelativeLayout.LayoutParams(140, 140));
         save.setX(10);
-        save.setY(220);
+        save.setY(980);
         save.setBackgroundColor(Color.GREEN);
         save.setText("save");
-        save.setTextSize(7);
+        save.setTextSize(13);
         save.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,12 +166,12 @@ public class GameScene extends View{
         relativeLayout.addView(save);
 
         Button load = new Button(context);
-        load.setLayoutParams(new RelativeLayout.LayoutParams(80,80));
+        load.setLayoutParams(new RelativeLayout.LayoutParams(140,140));
         load.setX(10);
-        load.setY(340);
+        load.setY(1150);
         load.setBackgroundColor(Color.BLUE);
         load.setText("load");
-        load.setTextSize(7);
+        load.setTextSize(13);
         load.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,16 +400,16 @@ public class GameScene extends View{
 
         switch (suit) {
             case Heart:
-                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 40, "Heart");
+                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 55, "Heart");
                 break;
             case Club:
-                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 40, "Club");
+                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 55, "Club");
                 break;
             case Diamond:
-                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 40, "Diamond");
+                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 55, "Diamond");
                 break;
             case Spade:
-                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 40, "Spade");
+                setFoundationHintLabel((int) FoundationPileImg.getX(), (int) FoundationPileImg.getY() - 55, "Spade");
                 break;
 
         }
@@ -418,7 +418,7 @@ public class GameScene extends View{
     public void setFoundationHintLabel(int x, int y, String hint){
         TextView labelClubAce = new TextView(context);
         labelClubAce.setText(hint);
-        labelClubAce.setTextSize(12);
+        labelClubAce.setTextSize(13);
         labelClubAce.setTextColor(Color.GREEN);
         labelClubAce.setX(x);
         labelClubAce.setY(y);

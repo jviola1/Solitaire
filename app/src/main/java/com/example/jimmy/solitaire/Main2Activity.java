@@ -4,7 +4,9 @@ package com.example.jimmy.solitaire;
  * Created by Amritpal on 4/13/2016.
  */
 
+        import android.app.AlertDialog;
         import android.content.Context;
+        import android.content.DialogInterface;
         import android.content.pm.ActivityInfo;
         import android.graphics.Rect;
         import android.media.Image;
@@ -72,5 +74,38 @@ public class Main2Activity extends AppCompatActivity {
 
         gameScene.touchCorrection = -(contentTop+statusBarHeight);
     }
+    /*  4/27/2016
+           Added dialog box in the play activity to exit or not.
+           *****
+           ADDED TO MAIN FILE, github
+           4/29/2016
+           *****
+        */
+    public void onBackPressed() {
+        onBackPressedHandler();
+    }
 
+    //Handles the event when exit in the app and back on the phone is pressed
+    public void onBackPressedHandler() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main2Activity.this);
+//        Dialog Title
+        alertDialog.setTitle("Exit Game");
+//        Dialog Message
+        alertDialog.setMessage("Are you sure you want to exit the game?");
+//        "Yes" Button
+        alertDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+//        "No" Button
+        alertDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
 }
