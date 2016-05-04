@@ -50,7 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(relativeLayout);
 
+        gameScene.randomGame();
 
+        GameFileHelper.RankSaver(this, "jojo", 56);
+        Log.d("file:", GameFileHelper.RankLoader(this)[2]);
     }
 
     public void onWindowFocusChanged(boolean hasFocus){

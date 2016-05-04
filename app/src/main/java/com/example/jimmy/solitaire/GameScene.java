@@ -1,6 +1,11 @@
 package com.example.jimmy.solitaire;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -10,12 +15,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.MotionEventCompat;
+import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Xml;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +37,8 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by jay on 16/3/25.
@@ -64,6 +73,10 @@ public class GameScene extends View{
 
     ArrayList<Card> allCards = new ArrayList<Card>();
 
+    TextView name, timeView;
+
+    Thread t;
+
     int lastIndexOfPile = -1;
 
     boolean flip = false;
@@ -71,7 +84,7 @@ public class GameScene extends View{
     boolean isFromWaste = false;
     int fromIndexOfFoundation = -1;
 
-    public GameScene(Context context, final RelativeLayout relativeLayout, int touchCorrection, int width, int height) {
+    public GameScene(final Context context, final RelativeLayout relativeLayout, int touchCorrection, int width, int height) {
         super(context);
 
         this.context = context;
@@ -79,7 +92,6 @@ public class GameScene extends View{
         this.width = width;
         this.height = height;
         this.relativeLayout = relativeLayout;
-
 
         //initialize basicPiles and add them to basicPileList
         for(int i = 0;i<7;i++) {
@@ -127,60 +139,69 @@ public class GameScene extends View{
         stockAndWaste.height = height;
 
         //initialize foundationPiles
-        setFoundationPile((int) (metrics.widthPixels - (/*wasteImg.getX() +*/ marginX+width)), (int)wasteImg.getY(), 0, Card.Suit.Club);
-        setFoundationPile((int) (metrics.widthPixels - ((marginX + width) * 2)),  (int) wasteImg.getY(), 1, Card.Suit.Spade);
+        setFoundationPile((int) (metrics.widthPixels - (/*wasteImg.getX() +*/ marginX + width)), (int) wasteImg.getY(), 0, Card.Suit.Club);
+        setFoundationPile((int) (metrics.widthPixels - ((marginX + width) * 2)), (int) wasteImg.getY(), 1, Card.Suit.Spade);
         setFoundationPile((int) (metrics.widthPixels - ((marginX + width) * 3)), (int) wasteImg.getY(), 2, Card.Suit.Diamond);
         setFoundationPile((int) (metrics.widthPixels - ((marginX + width) * 4)), (int) wasteImg.getY(), 3, Card.Suit.Heart);
 
-
-        final Button random = new Button(context);
-        random.setLayoutParams(new RelativeLayout.LayoutParams(80, 80));
-        random.setX(10);
-        random.setY(100);
-        random.setBackgroundColor(Color.RED);
-        random.setText("random");
-        random.setTextSize(7);
-        random.setOnClickListener(new OnClickListener() {
+        Button menu = new Button(context);
+        menu.setLayoutParams(new RelativeLayout.LayoutParams(80, 80));
+        menu.setX(10);
+        menu.setY(100);
+        menu.setBackgroundColor(Color.RED);
+        menu.setText("Menu");
+        menu.setTextSize(7);
+        menu.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                randomGame();
+                new AlertDialog.Builder(context)
+                        .setTitle("Menu")
+                        .setMessage("Select function:")
+                        .setNegativeButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(allCards.size()!=0){
+                                    saveHelper();
+                                }
+                            }
+                        })
+                        .setPositiveButton("Road", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loadGame();
+                            }
+                        })
+                        .setNeutralButton("New Game", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                randomGame();
+                            }
+                        })
+                        .show();
             }
         });
-        relativeLayout.addView(random);
+        relativeLayout.addView(menu);
 
-        Button save = new Button(context);
-        save.setLayoutParams(new RelativeLayout.LayoutParams(80, 80));
-        save.setX(10);
-        save.setY(220);
-        save.setBackgroundColor(Color.GREEN);
-        save.setText("save");
-        save.setTextSize(7);
-        save.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (allCards.size() != 0) {
-                    saveHelper();
-                }
-            }
-        });
-        relativeLayout.addView(save);
+        name = new TextView(context);
+        name.setLayoutParams(new RelativeLayout.LayoutParams(100, 40));
+        name.setX(20);
+        name.setY(20);
+        name.setTextColor(Color.BLUE);
+        name.setTextSize(10);
+        name.setText("unknown");
+        relativeLayout.addView(name);
 
-        Button load = new Button(context);
-        load.setLayoutParams(new RelativeLayout.LayoutParams(80,80));
-        load.setX(10);
-        load.setY(340);
-        load.setBackgroundColor(Color.BLUE);
-        load.setText("load");
-        load.setTextSize(7);
-        load.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadGame();
-            }
-        });
-        relativeLayout.addView(load);
-
+        timeView = new TextView(context);
+        timeView.setLayoutParams(new RelativeLayout.LayoutParams(100, 40));
+        timeView.setX(200);
+        timeView.setY(20);
+        timeView.setTextColor(Color.RED);
+        timeView.setTextSize(10);
+        timeView.setText("0");
+        relativeLayout.addView(timeView);
     }
+
+
 
     //set touchevent
     public boolean onTouchEvent(MotionEvent e) {
@@ -334,6 +355,9 @@ public class GameScene extends View{
                         }
                     }
                 }
+
+                gameClear();
+
                 return true;
 
 
@@ -342,7 +366,80 @@ public class GameScene extends View{
         }
     }
 
-    public void returnCardsBack(){
+
+
+    private void gameClear(){
+        if(isGameClear()){
+
+            //GameFileHelper.RankSaver(context, );
+
+            new AlertDialog.Builder(context)
+                    .setTitle("Message:")
+                    .setMessage("Game Clear, congratulation!!!")
+                    .setPositiveButton("Start New Game", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            randomGame();
+                        }
+                    })
+                    .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                            // field for back to main page
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    private boolean isGameClear(){
+        if(stockAndWaste.isEmpty()&&isFoundationPilesEmpty()&&isBasicPilesClear()){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private boolean isFoundationPilesEmpty(){
+        int c = 0;
+        for(int i = 0;i<4;i++){
+            if(foundationPiles[i].foundationList.size()!=0){
+                c += 1;
+            }
+        }
+        if (c == 0){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private boolean isBasicPilesClear(){
+        int c = 0;
+        for(int i=0;i<7;i++){
+            if(basicPileList[i].cardList.size()!=0){
+                c += 1;
+            }
+        }
+        if(c==4){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    //for test
+    private void openAllCardsInBasicPiles(){
+        for (int i = 0; i<7;i++){
+            for(int j = 0;j<basicPileList[i].cardList.size();j++){
+                basicPileList[i].cardList.get(j).openCard();
+            }
+        }
+    }
+
+    private void returnCardsBack(){
         if (tempList.size() != 0) {
             if(lastIndexOfPile!=-1) {
                 basicPileList[lastIndexOfPile].returnCards(tempList);
@@ -362,12 +459,34 @@ public class GameScene extends View{
         }
     }
 
+    private void nameInputDialog(){
+
+        final EditText editText = new EditText(context);
+
+        new AlertDialog.Builder(context)
+                .setTitle("Hello")
+                .setMessage("Please input a player name:")
+                .setView(editText)
+                .setPositiveButton("Play", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        name.setText(editText.getText());
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
     public void randomGame(){
+
+        nameInputDialog();
 
         clearCards();
         //initialize all the 52 cards and add them to stockList of stockAndWaste
         load52Cards();
         shuffle();
+
+        timeView.setText("0");
 
         //pick random cards from stockList and add them to the specific basicPile
         basicPileList[0].setCardsToCardList(getRandomCardsToPile(1, stockAndWaste.stockList));
@@ -379,7 +498,7 @@ public class GameScene extends View{
         basicPileList[6].setCardsToCardList(getRandomCardsToPile(7, stockAndWaste.stockList));
     }
 
-    public ImageView getCardImageView(){
+    private ImageView getCardImageView(){
         ImageView imageView = new ImageView(context);
         imageView.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         relativeLayout.addView(imageView);
@@ -387,7 +506,7 @@ public class GameScene extends View{
         return imageView;
     }
 
-    public void setFoundationPile(int x, int y, int index, Card.Suit suit){
+    private void setFoundationPile(int x, int y, int index, Card.Suit suit){
         ImageView FoundationPileImg = new ImageView(context);
         FoundationPileImg.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         FoundationPileImg.setBackgroundColor(Color.GRAY);
@@ -415,7 +534,7 @@ public class GameScene extends View{
         }
     }
 
-    public void setFoundationHintLabel(int x, int y, String hint){
+    private void setFoundationHintLabel(int x, int y, String hint){
         TextView labelClubAce = new TextView(context);
         labelClubAce.setText(hint);
         labelClubAce.setTextSize(12);
@@ -426,7 +545,7 @@ public class GameScene extends View{
     }
 
     //method to pick specific number of random cards from an arrayList
-    public Card[] getRandomCardsToPile(int numberOfCards, ArrayList<Card> cardList){
+    private Card[] getRandomCardsToPile(int numberOfCards, ArrayList<Card> cardList){
         Card[] cards = new Card[numberOfCards];
 
         for(int i = 0;i<numberOfCards;i++){
@@ -496,6 +615,9 @@ public class GameScene extends View{
             info += basicPileList[i].getCardListInfo()+"##";
         }
 
+        info += name.getText()+"##";
+        info += timeView.getText()+"##";
+
         try{
             FileOutputStream check = context.openFileOutput("game.sav", Context.MODE_APPEND);
             check.close();
@@ -561,34 +683,25 @@ public class GameScene extends View{
     private void loadGame(){
         clearCards();
         String[] pileInfo = loadHelper();
+
         String[] stockInfo = getPileString(pileInfo[0]);
         String[] wasteInfo = getPileString(pileInfo[1]);
-        String[] foundation1Info = getPileString(pileInfo[2]);
-        String[] foundation2Info = getPileString(pileInfo[3]);
-        String[] foundation3Info = getPileString(pileInfo[4]);
-        String[] foundation4Info = getPileString(pileInfo[5]);
-        String[] basicPile1Info = getPileString(pileInfo[6]);
-        String[] basicPile2Info = getPileString(pileInfo[7]);
-        String[] basicPile3Info = getPileString(pileInfo[8]);
-        String[] basicPile4Info = getPileString(pileInfo[9]);
-        String[] basicPile5Info = getPileString(pileInfo[10]);
-        String[] basicPile6Info = getPileString(pileInfo[11]);
-        String[] basicPile7Info = getPileString(pileInfo[12]);
-
         loadCardsInStockAndWaste(stockInfo, wasteInfo);
 
-        loadCardsInFoundationPile(foundation1Info, foundationPiles[0]);
-        loadCardsInFoundationPile(foundation2Info, foundationPiles[1]);
-        loadCardsInFoundationPile(foundation3Info, foundationPiles[2]);
-        loadCardsInFoundationPile(foundation4Info, foundationPiles[3]);
+        for(int i = 2;i<13;i++){
+            if(i<6){
+                loadCardsInFoundationPile(getPileString(pileInfo[i]), foundationPiles[i-2]);
+            }
+            else {
+                loadCardsInBasicPile(getPileString(pileInfo[i]), basicPileList[i-6]);
+            }
+        }
 
-        loadCardsInBasicPile(basicPile1Info, basicPileList[0]);
-        loadCardsInBasicPile(basicPile2Info, basicPileList[1]);
-        loadCardsInBasicPile(basicPile3Info, basicPileList[2]);
-        loadCardsInBasicPile(basicPile4Info, basicPileList[3]);
-        loadCardsInBasicPile(basicPile5Info, basicPileList[4]);
-        loadCardsInBasicPile(basicPile6Info, basicPileList[5]);
-        loadCardsInBasicPile(basicPile7Info, basicPileList[6]);
+
+        name.setText(pileInfo[13]);
+        timeView.setText(String.valueOf(pileInfo[14]));
+
+        gameClear();
     }
 
     private void loadCardsInFoundationPile(String[] foundationInfo, FoundationPile foundationPile){
@@ -714,7 +827,7 @@ public class GameScene extends View{
         }
     }
 
-    public static int scalePixels(int px, boolean isVertical)
+    private static int scalePixels(int px, boolean isVertical)
     {
         if(isVertical)
             return (int) (px * ((metrics.heightPixels) / 768.0));
@@ -723,3 +836,8 @@ public class GameScene extends View{
     }
 
 }
+
+
+
+
+
