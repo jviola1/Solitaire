@@ -395,7 +395,7 @@ public class GameScene extends View{
     }
 
     private boolean isGameClear(){
-        if(stockAndWaste.isEmpty()&&isFoundationPilesEmpty()&&isBasicPilesClear()){
+        if(stockAndWaste.isEmpty()&&isFoundationPilesEmpty()&&isBasicPilesClear()&&isAllCardsOpen()){
             return true;
         }
         else
@@ -410,6 +410,21 @@ public class GameScene extends View{
             }
         }
         if (c == 0){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private boolean isAllCardsOpen(){
+        int numberOfOpenCars = 0;
+        for (int i = 0;i<52;i++){
+            if(allCards.get(i).isOpen()){
+                numberOfOpenCars += 1;
+            }
+        }
+
+        if(numberOfOpenCars == 52){
             return true;
         }
         else
