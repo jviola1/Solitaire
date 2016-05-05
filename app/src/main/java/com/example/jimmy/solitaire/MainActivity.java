@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
         gameScene.randomGame();
 
 
-        Log.d("ranker1:", GameFileHelper.getRanker(this, 0)[0] + "  ||  " + GameFileHelper.getRanker(this, 0)[1]);
-        Log.d("ranker2:", GameFileHelper.getRanker(this,1)[0]+"  ||  "+GameFileHelper.getRanker(this, 1)[1]);
-        Log.d("ranker3:", GameFileHelper.getRanker(this,2)[0]+"  ||  "+GameFileHelper.getRanker(this, 2)[1]);
+//        Log.d("ranker1:", GameFileHelper.getRanker(this, 0)[0] + "  ||  " + GameFileHelper.getRanker(this, 0)[1]);
+//        Log.d("ranker2:", GameFileHelper.getRanker(this,1)[0]+"  ||  "+GameFileHelper.getRanker(this, 1)[1]);
+//        Log.d("ranker3:", GameFileHelper.getRanker(this,2)[0]+"  ||  "+GameFileHelper.getRanker(this, 2)[1]);
     }
 
     public void onWindowFocusChanged(boolean hasFocus){
