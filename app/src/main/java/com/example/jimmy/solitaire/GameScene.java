@@ -13,6 +13,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.MotionEventCompat;
 import android.text.Editable;
@@ -55,6 +56,8 @@ public class GameScene extends View{
     int marginX = scalePixels(50, false);
     int marginY = 300;
 
+    MyTimer myTimer;
+
     RelativeLayout relativeLayout;
 
     static DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -74,6 +77,8 @@ public class GameScene extends View{
     ArrayList<Card> allCards = new ArrayList<Card>();
 
     TextView name, timeView;
+
+    String playerName;
 
     Thread t;
 
@@ -160,7 +165,7 @@ public class GameScene extends View{
                         .setNegativeButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(allCards.size()!=0){
+                                if (allCards.size() != 0) {
                                     saveHelper();
                                 }
                             }
@@ -183,22 +188,29 @@ public class GameScene extends View{
         relativeLayout.addView(menu);
 
         name = new TextView(context);
-        name.setLayoutParams(new RelativeLayout.LayoutParams(100, 40));
+        name.setLayoutParams(new RelativeLayout.LayoutParams(200, 40));
         name.setX(20);
         name.setY(20);
         name.setTextColor(Color.BLUE);
         name.setTextSize(10);
-        name.setText("unknown");
+        name.setText("Player:");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            name.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
+        }
         relativeLayout.addView(name);
 
         timeView = new TextView(context);
-        timeView.setLayoutParams(new RelativeLayout.LayoutParams(100, 40));
+        timeView.setLayoutParams(new RelativeLayout.LayoutParams(300, 40));
         timeView.setX(200);
         timeView.setY(20);
         timeView.setTextColor(Color.RED);
         timeView.setTextSize(10);
-        timeView.setText("0");
+        timeView.setText("Timer:");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            timeView.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
+        }
         relativeLayout.addView(timeView);
+
     }
 
 
@@ -371,7 +383,7 @@ public class GameScene extends View{
     private void gameClear(){
         if(isGameClear()){
 
-            //GameFileHelper.RankSaver(context, );
+            GameFileHelper.RankSaver(context, playerName, myTimer.time);
 
             new AlertDialog.Builder(context)
                     .setTitle("Message:")
@@ -485,7 +497,11 @@ public class GameScene extends View{
                 .setPositiveButton("Play", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        name.setText(editText.getText());
+                        name.setText("Player: "+editText.getText());
+                        playerName = editText.getText().toString();
+
+                        myTimer.isRunning = true;
+                        myTimer.time = 0;
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -501,7 +517,6 @@ public class GameScene extends View{
         load52Cards();
         shuffle();
 
-        timeView.setText("0");
 
         //pick random cards from stockList and add them to the specific basicPile
         basicPileList[0].setCardsToCardList(getRandomCardsToPile(1, stockAndWaste.stockList));
@@ -630,8 +645,8 @@ public class GameScene extends View{
             info += basicPileList[i].getCardListInfo()+"##";
         }
 
-        info += name.getText()+"##";
-        info += timeView.getText()+"##";
+        info += playerName+"##";
+        info += String.valueOf(myTimer.time)+"##";
 
         try{
             FileOutputStream check = context.openFileOutput("game.sav", Context.MODE_APPEND);
@@ -696,6 +711,7 @@ public class GameScene extends View{
     }
 
     private void loadGame(){
+
         clearCards();
         String[] pileInfo = loadHelper();
 
@@ -712,9 +728,9 @@ public class GameScene extends View{
             }
         }
 
-
-        name.setText(pileInfo[13]);
-        timeView.setText(String.valueOf(pileInfo[14]));
+        playerName = pileInfo[13];
+        name.setText("Player:"+playerName);
+        myTimer.time = Integer.parseInt(pileInfo[14]);
 
         gameClear();
     }
@@ -848,6 +864,55 @@ public class GameScene extends View{
             return (int) (px * ((metrics.heightPixels) / 768.0));
         return (int) (px * ((metrics.widthPixels) / 1280.0));
 
+    }
+
+}
+
+
+class MyTimer extends Thread{
+    TextView textView;
+    int time = 0;
+
+    boolean isRunning = false;
+
+    public MyTimer(TextView textView){
+        this.textView = textView;
+        this.start();
+    }
+
+    public void run() {
+        try {
+            while (true) {
+                if(isRunning) {
+                    Thread.sleep(1000);
+                    mHandler.post(mUpdateResults);
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    final Handler mHandler = new Handler();
+    final Runnable mUpdateResults = new Runnable() {
+        public void run() {
+            time += 1;
+            textView.invalidate();
+            textView.setText(IntegerToHMS(time));
+        }
+    };
+
+    public static String IntegerToHMS(int time){
+        if(time/60<1){
+            return String.valueOf("Time: ")+String.valueOf(time)+"s";
+        }
+        else if(time/3600<1){
+            return String.valueOf("Time: ")+String.valueOf(time/60)+"mins  "+String.valueOf(time%60)+"s";
+        }
+        else {
+            return String.valueOf("Time: ")+String.valueOf(time/3600)+"hours  "+String.valueOf(time%3600/60)+"mins  "+String.valueOf(time%3600%60)+"s";
+        }
     }
 
 }

@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
             gameScene = new GameScene(this, relativeLayout, -162, height/8, width/8);
         }
 
-        
+        MyTimer myTimer = new MyTimer(gameScene.timeView);
+
+        gameScene.myTimer = myTimer;
 
         relativeLayout.addView(gameScene);
 
@@ -52,8 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         gameScene.randomGame();
 
-        GameFileHelper.RankSaver(this, "jojo", 56);
-        Log.d("file:", GameFileHelper.RankLoader(this)[2]);
+
+        Log.d("ranker1:", GameFileHelper.getRanker(this, 0)[0] + "  ||  " + GameFileHelper.getRanker(this, 0)[1]);
+        Log.d("ranker2:", GameFileHelper.getRanker(this,1)[0]+"  ||  "+GameFileHelper.getRanker(this, 1)[1]);
+        Log.d("ranker3:", GameFileHelper.getRanker(this,2)[0]+"  ||  "+GameFileHelper.getRanker(this, 2)[1]);
     }
 
     public void onWindowFocusChanged(boolean hasFocus){
