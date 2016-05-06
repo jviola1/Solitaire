@@ -47,16 +47,16 @@
         android:layout_centerHorizontal="true"
         android:textSize="40dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:id="@+id/button2"
-            android:textSize="20dp"
-            android:onClick="onHomeClick"
-            android:layout_marginBottom="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Home"-->
+            <!--android:id="@+id/button2"-->
+            <!--android:textSize="20dp"-->
+            <!--android:onClick="onHomeClick"-->
+            <!--android:layout_marginBottom="60dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
     </RelativeLayout>
 
     <TableLayout

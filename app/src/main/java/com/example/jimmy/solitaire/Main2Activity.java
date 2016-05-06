@@ -33,8 +33,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
@@ -51,13 +50,20 @@ public class Main2Activity extends AppCompatActivity {
             gameScene = new GameScene(this, relativeLayout, -162, height/8, width/8);
         }
 
+        MyTimer myTimer = new MyTimer(gameScene.timeView);
 
+        gameScene.myTimer = myTimer;
 
         relativeLayout.addView(gameScene);
 
         setContentView(relativeLayout);
 
+        gameScene.randomGame();
 
+
+//        Log.d("ranker1:", GameFileHelper.getRanker(this, 0)[0] + "  ||  " + GameFileHelper.getRanker(this, 0)[1]);
+//        Log.d("ranker2:", GameFileHelper.getRanker(this,1)[0]+"  ||  "+GameFileHelper.getRanker(this, 1)[1]);
+//        Log.d("ranker3:", GameFileHelper.getRanker(this,2)[0]+"  ||  "+GameFileHelper.getRanker(this, 2)[1]);
     }
 
     public void onWindowFocusChanged(boolean hasFocus){
@@ -74,6 +80,7 @@ public class Main2Activity extends AppCompatActivity {
 
         gameScene.touchCorrection = -(contentTop+statusBarHeight);
     }
+
     /*  4/27/2016
            Added dialog box in the play activity to exit or not.
            *****

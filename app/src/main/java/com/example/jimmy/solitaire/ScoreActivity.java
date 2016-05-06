@@ -34,8 +34,8 @@ public class ScoreActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void onHomeClick(View v) {
-        Intent myintent = new Intent(this, MainActivity.class);
-        startActivity(myintent);
-    }
+//    public void onHomeClick(View v) {
+//        Intent myintent = new Intent(this, MainActivity.class);
+//        startActivity(myintent);
+//    }
 }

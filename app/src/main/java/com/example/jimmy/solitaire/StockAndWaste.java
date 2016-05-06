@@ -27,6 +27,14 @@ public class StockAndWaste extends Pile{
         this.wasteArea = new Rect(wastePoint.x, wastePoint.y, wastePoint.x + width, wastePoint.y + height);
     }
 
+    public boolean isEmpty(){
+        if(stockList.size()==0&&wasteList.size()==0){
+            return true;
+        }
+        else
+            return false;
+    }
+
     public void addCard(Card card){
         stockList.add(card);
 

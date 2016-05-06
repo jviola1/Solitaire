@@ -45,8 +45,8 @@ public class SecondActivity extends AppCompatActivity {
 //        Intent myintent = new Intent(this, MainActivity.class);
 //        startActivity(myintent);
 //    }
-    public void onHomeClick(View v) {
-        Intent myintent = new Intent(this, MainActivity.class);
-        startActivity(myintent);
-    }
+//    public void onHomeClick(View v) {
+//        Intent myintent = new Intent(this, MainActivity.class);
+//        startActivity(myintent);
+//    }
 }

@@ -22,7 +22,7 @@ import android.content.DialogInterface;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    Button play, manual, score, exit, watch;
+    Button play, manual, score, exit;
     public static final int PLAY_REQUEST_CODE = 0;
     public static final int MANUAL_REQUEST_CODE = 1;
     public static final int SCORE_REQUEST_CODE = 2;
@@ -44,8 +44,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         exit = (Button) findViewById(R.id.button4);
         exit.setOnClickListener(this);
 
-        watch = (Button) findViewById(R.id.button5);
-        watch.setOnClickListener(this);
 
     }
 
@@ -102,10 +100,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 onBackPressed();
                 break;
 
-            case R.id.button5:
-                Intent w = new Intent(this, TimerActivity.class);
-                startActivity(w);
-                break;
 
             default:
                 break;
