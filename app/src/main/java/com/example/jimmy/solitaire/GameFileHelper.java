@@ -4,10 +4,12 @@ import android.content.Context;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by jay on 16/4/29.
  */
+
 public class GameFileHelper {
 
     public static String[] getRanker(Context context, int index){
@@ -16,10 +18,21 @@ public class GameFileHelper {
 
     public static String[] RankLoader(Context context){
 
-        String[] PileInfo = new String[13];
+        if(!context.getFileStreamPath("RankPlayers.sav").exists()){
+            try {
+                FileOutputStream check = context.openFileOutput("RankPlayers.sav", Context.MODE_APPEND);
+                check.write("--&0##--&0##--&0##--&0##--&0##--&0##--&0##--&0##--&0##--&0".getBytes());
+                check.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        String[] Info = new String[13];
 
         try {
-            FileInputStream inputStream = context.openFileInput("rankers.sav");
+            FileInputStream inputStream = context.openFileInput("RankPlayers.sav");
             byte[] temp = new byte[1024];
             StringBuilder sb = new StringBuilder("");
             int len = 0;
@@ -29,41 +42,60 @@ public class GameFileHelper {
 
             inputStream.close();
 
-            PileInfo = sb.toString().split("##");
+            Info = sb.toString().split("##");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return PileInfo;
+        return Info;
     }
 
-    public static void RankSaver(Context context, String name, int time){
+    private static String contentGenerater(int index, String[] rankers, String[] newRaner){
 
-        if(context.getFileStreamPath("rankers.sav").exists()){
+
+
+        for(int i=0;i<10;i++){
+            if(rankers[i].split("&")[1].equals("0")&&index<=i){
+                for(int j = index;j<i&&j<9;j++){
+                    rankers[j+1] = rankers[j];
+                }
+                break;
+            }
+        }
+
+        rankers[index] = newRaner[0]+"&"+newRaner[1];
+
+        String info = "";
+
+        for (int i=0;i<10;i++){
+            info += rankers[i]+"##";
+        }
+
+        return info;
+    }
+
+    public static int RankSaver(Context context, String name, int time){
+
+        int r = 0;
+
+        if(context.getFileStreamPath("RankPlayers.sav").exists()){
             String info = "";
 
-            String[] player1 = RankLoader(context)[0].split("&");
-            String[] player2 = RankLoader(context)[1].split("&");
-            String[] player3 = RankLoader(context)[2].split("&");
+            for(int i =0;i<10;i++){
+                if(Integer.parseInt(RankLoader(context)[i].split("&")[1])>time || RankLoader(context)[i].split("&")[1].equals("0")){
+                    info = contentGenerater(i, RankLoader(context), new String[]{name, String.valueOf(time)});
 
+                    r = i+1;
 
-            if(Integer.parseInt(player1[1])>time){
-                info += name+"&"+String.valueOf(time)+"##"+RankLoader(context)[1]+"##"+RankLoader(context)[2];
+                    break;
+                }
             }
-            else if(Integer.parseInt(player2[1])>time){
-                info += RankLoader(context)[0]+"##"+name+"&"+String.valueOf(time)+"##"+RankLoader(context)[2];
-            }
-            else if(Integer.parseInt(player3[1])>time){
-                info += RankLoader(context)[0]+"##"+RankLoader(context)[1]+"##"+name+"&"+String.valueOf(time);
-            }
-            else {
-                info += RankLoader(context)[0]+"##"+RankLoader(context)[1]+"##"+RankLoader(context)[2];
-            }
+
 
             try{
 
-                FileOutputStream outputStream = context.openFileOutput("rankers.sav", Context.MODE_PRIVATE);
+                FileOutputStream outputStream = context.openFileOutput("RankPlayers.sav", Context.MODE_PRIVATE);
                 outputStream.write(info.getBytes());
                 outputStream.close();
             }
@@ -73,15 +105,16 @@ public class GameFileHelper {
         }
         else {
             try {
-                FileOutputStream check = context.openFileOutput("rankers.sav", Context.MODE_APPEND);
-                check.write("unknown&700000##unknown&800000##unknown&900000".getBytes());
-                        check.close();
+                FileOutputStream check = context.openFileOutput("RankPlayers.sav", Context.MODE_APPEND);
+                check.write("--&0##--&0##--&0##--&0##--&0##--&0##--&0##--&0##--&0##--&0".getBytes());
+                check.close();
             }
             catch (Exception e){
                 e.printStackTrace();
             }
         }
 
+        return r;
 
     }
 }
