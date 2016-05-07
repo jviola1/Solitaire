@@ -105,78 +105,90 @@
                 android:layout_column="1"
                 android:text="Keith Krewat"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/name1" />
             <TextView
                 android:layout_column="1"
                 android:text="2min 24sec"
                 android:gravity="right"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/time1" />
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_column="1"
                 android:text="Amritpal Singh"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/name2" />
             <TextView
                 android:layout_column="1"
                 android:text="2min 25sec"
                 android:gravity="right"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/time2" />
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_column="1"
                 android:text="Jim Viola"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/name3" />
             <TextView
                 android:layout_column="1"
                 android:text="2min 22sec"
                 android:gravity="right"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/time3" />
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_column="1"
                 android:text="Jim Viola"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/name4" />
             <TextView
                 android:layout_column="1"
                 android:text="2min 20sec"
                 android:gravity="right"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/time4" />
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_column="1"
                 android:text="Xinyue Xie"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/name5" />
             <TextView
                 android:layout_column="1"
                 android:text="2min 24sec"
                 android:gravity="right"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/time5" />
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_column="1"
                 android:text="Jiajun Zhu"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/name6" />
             <TextView
                 android:layout_column="1"
                 android:text="2min 22sec"
                 android:gravity="right"
                 android:textSize="20dp"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:id="@+id/time6" />
         </TableRow>
     </TableLayout>
 
