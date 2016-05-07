@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static android.support.v4.app.ActivityCompat.startActivity;
+import static android.support.v4.content.ContextCompat.startActivities;
 
 /**
  * Created by jay on 16/3/25.
@@ -383,11 +384,17 @@ public class GameScene extends View{
     private void gameClear(){
         if(isGameClear()){
 
-            GameFileHelper.RankSaver(context, playerName, myTimer.time);
+            String rankingInfo = "";
+            if(GameFileHelper.RankSaver(context, playerName, myTimer.time)==0){
+                rankingInfo = "You are out of ranking :(";
+            }
+            else{
+                rankingInfo = "You are No."+String.valueOf(GameFileHelper.RankSaver(context, playerName, myTimer.time)+" player on ranking :)");
+            }
 
             new AlertDialog.Builder(context)
                     .setTitle("Message:")
-                    .setMessage("Game Clear, congratulation!!!")
+                    .setMessage("Game Clear, congratulation!!!"+"\n"+rankingInfo)
                     .setPositiveButton("Start New Game", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -399,6 +406,8 @@ public class GameScene extends View{
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
 
+                            Intent intent = new Intent(context, ScoreActivity.class);
+                            context.startActivity(intent);
                             // field for back to main page
                         }
                     })
@@ -899,19 +908,19 @@ class MyTimer extends Thread{
         public void run() {
             time += 1;
             textView.invalidate();
-            textView.setText(IntegerToHMS(time));
+            textView.setText("Time: "+IntegerToHMS(time));
         }
     };
 
     public static String IntegerToHMS(int time){
         if(time/60<1){
-            return String.valueOf("Time: ")+String.valueOf(time)+"s";
+            return String.valueOf(time)+"s";
         }
         else if(time/3600<1){
-            return String.valueOf("Time: ")+String.valueOf(time/60)+"mins  "+String.valueOf(time%60)+"s";
+            return String.valueOf(time/60)+"mins  "+String.valueOf(time%60)+"s";
         }
         else {
-            return String.valueOf("Time: ")+String.valueOf(time/3600)+"hours  "+String.valueOf(time%3600/60)+"mins  "+String.valueOf(time%3600%60)+"s";
+            return String.valueOf(time/3600)+"hours  "+String.valueOf(time%3600/60)+"mins  "+String.valueOf(time%3600%60)+"s";
         }
     }
 
