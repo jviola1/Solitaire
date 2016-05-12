@@ -8,4 +8,21 @@
     <string name="title_activity_second">Manual</string>
     <string name="title_activity_score">Score</string>
     <string name="action_settings">Settings</string>
+    <string name="manual_goal">Goal\n</string>
+    <string name="manual_goal_content">In Solitaire, the goal is to eventually fill each of the goal piles with the cards from their respective suits from Ace to King ascending order.  Once all four piles are filled, the player wins.  There is no technical \"loss condition\" for Solitaire as it only ends when the player determines they have no more moves to make.
+    \n\n\n</string>
+    <string name="manual_drawing">Drawing\n</string>
+    <string name="manual_drawing_content">Our version of Solitaire only features single card draw.  When a player taps the deck, it will draw a single card and add it to the adjacent \"draw pile\".  Once the deck has no more cards remaining, the player can tap the empty space and the cards from the draw pile will be stacked back into a deck so that the latest card drawn will once again be at the bottom of the deck.
+    \n\n\n</string>
+    <string name="manual_play_piles">Play Piles\n</string>
+    <string name="manual_play_piles_content">There are seven play piles that act as the main source of card movement.  A player is able to move a card to a given pile in two circumstances:\n\n
+\t\t1.\tIf the pile is empty, the card being moved into the empty pile must be a King.\n
+\t\t2.\tIf the pile is not empty, the moved card must be of the opposite color (note: suit does not matter) and one less rank value as compared to the last card in the given pile.\n\n
+Players are also able to move multiple cards at once.  By grabbing a card in the middle of a pile, it also moves all cards below it.  So long as the topmost card of the dragged pile meets one of the conditions above, the move is legal.
+    \n\n\n</string>
+    <string name="manual_goal_piles">Goal Piles\n</string>
+    <string name="manual_goal_piles_content"> Like the play piles, there are two instances where a player can move a card:\n\n
+    \t\t1.\tIf the pile is empty, the card being moved into the empty pile must be an Ace.\n
+    \t\t2.If the pile is not empty, the moved card must be one rank higher and of the same suit of the card it\'s being placed on top of.\n\n
+    Unlike the play piles, however, goal piles only accept moves of one card at a time.  Meaning you can\'t drag a stack of cards into a goal pile even if the top card matches the above the conditions.\n</string>
 </resources>

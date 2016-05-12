@@ -189,7 +189,7 @@ public class GameScene extends View{
         relativeLayout.addView(menu);
 
         name = new TextView(context);
-        name.setLayoutParams(new RelativeLayout.LayoutParams(200, 60));
+        name.setLayoutParams(new RelativeLayout.LayoutParams(130, 200));
         name.setX(20);
         name.setY(20);
         name.setTextColor(Color.BLUE);

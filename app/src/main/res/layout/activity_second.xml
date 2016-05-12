@@ -35,30 +35,109 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.jimmy.solitaire.SecondActivity">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.jimmy.solitaire.SecondActivity">
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Manual"
-        android:id="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:textSize="40dp"
-        android:layout_marginTop="55dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manual"
+            android:id="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:textSize="40dp"
+            android:layout_marginTop="55dp"/>
 
 
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/textView">
 
-    <!--<Button-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/manual_goal"
+                    android:textSize="35sp"
+                    android:capitalize="words"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:text="@string/manual_goal_content" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/manual_drawing"
+                    android:textSize="35sp"
+                    android:capitalize="words"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:text="@string/manual_drawing_content" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/manual_play_piles"
+                    android:textSize="35sp"
+                    android:capitalize="words"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/manual_play_piles_content"
+                    android:textSize="20sp"
+                    android:capitalize="words" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/manual_goal_piles"
+                    android:textSize="35sp"
+                    android:capitalize="words"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/manual_goal_piles_content"
+                    android:textSize="20sp"
+                    android:capitalize="words" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!--<Button-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="Home"-->
@@ -68,5 +147,5 @@
         <!--android:layout_marginBottom="30dp"-->
         <!--android:layout_alignParentBottom="true"-->
         <!--android:layout_centerHorizontal="true" />-->
-</RelativeLayout>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
